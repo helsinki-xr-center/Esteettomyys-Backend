@@ -14,14 +14,19 @@ namespace Esteettomyys_Backend
 	{
 		public static void Main(string[] args)
 		{
+			var assembly = AppDomain.CurrentDomain.GetAssemblies()
+			.Single(o => o.EntryPoint != null);
+
 			var config = new ConfigurationBuilder()
-		   .SetBasePath(Directory.GetCurrentDirectory())
-		   .AddJsonFile("hosting.json", optional: true)
-		   .Build();
+			.AddEnvironmentVariables()
+			.SetBasePath(Directory.GetCurrentDirectory())
+			.AddJsonFile("hosting.json", optional: true);
+
+			config.AddUserSecrets(assembly, optional: false);
 
 			var host = new WebHostBuilder()
 				.UseKestrel()
-				.UseConfiguration(config)
+				.UseConfiguration(config.Build())
 				.UseContentRoot(Directory.GetCurrentDirectory())
 				.UseStartup<Startup>()
 				.Build();
