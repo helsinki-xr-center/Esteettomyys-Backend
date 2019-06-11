@@ -30,7 +30,6 @@ namespace Esteettomyys_Backend.Controllers
 			User user = await userService.GetByUsername(username);
 
 			SaveData data = user.saveData;
-			data.data = JObject.Parse((data.data as BsonDocument).ToJson());
 
 			return data;
 		}
@@ -42,11 +41,22 @@ namespace Esteettomyys_Backend.Controllers
 		{
 			string username = HttpContext.User.GetAuthenticatedUsername();
 
-			newData.data = BsonSerializer.Deserialize<BsonDocument>((newData.data as JObject).ToString());
-
 			await userService.UpdateSaveData(username, newData);
 
 			return Accepted();
+		}
+
+		// GET api/saves/plain
+		[JwtAuthroize]
+		[HttpGet("plain")]
+		public async Task<ActionResult> GetPlain () {
+			string username = HttpContext.User.GetAuthenticatedUsername();
+
+			User user = await userService.GetByUsername(username);
+
+			//TODO: Decompress and Jsonify
+
+			return new JsonResult(user.saveData);
 		}
 
 	}

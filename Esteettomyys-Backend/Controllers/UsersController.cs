@@ -33,7 +33,8 @@ namespace Esteettomyys_Backend.Controllers
 
 			User user = new User() {
 				username = realUsername,
-				encryptedPassword = encryptedPassword
+				encryptedPassword = encryptedPassword,
+				timeCreated = DateTime.Now
 			};
 
 			if(await userService.UsernameExists(realUsername)) {

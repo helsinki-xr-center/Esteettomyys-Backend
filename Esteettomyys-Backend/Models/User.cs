@@ -14,6 +14,8 @@ namespace Esteettomyys_Backend
 		public string username { get; set; }
 		[BsonElement("Password")]
 		public string encryptedPassword { get; set; }
+		[BsonElement("CreationTime")]
+		public DateTime timeCreated;
 		[BsonElement("SaveData")]
 		public SaveData saveData { get; set; }
 	}

@@ -10,6 +10,6 @@ namespace Esteettomyys_Backend
 	{
 		public string saveName;
 		public DateTime timeStamp;
-		public dynamic data;
+		public string data;
 	}
 }
