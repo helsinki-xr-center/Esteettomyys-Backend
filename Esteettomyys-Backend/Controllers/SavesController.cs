@@ -20,7 +20,14 @@ namespace Esteettomyys_Backend.Controllers
 			userService = service;
 		}
 
-		// GET api/saves
+		/**
+		 * GET api/saves
+		 * 
+		 * <summary>
+		 * Returns the SaveData for the authenticated user.
+		 * The user needs to be authenticated to call this endpoint.
+		 * </summary>
+		 */
 		[JwtAuthroize]
 		[HttpGet]
 		public async Task<ActionResult<SaveData>> Get()
@@ -34,7 +41,14 @@ namespace Esteettomyys_Backend.Controllers
 			return data;
 		}
 
-		// POST api/saves
+		/**
+		 * POST api/saves
+		 * 
+		 * <summary>
+		 * Saves the provided SaveData for the authenticated user.
+		 * The user needs to be authenticated to call this endpoint.
+		 * </summary>
+		 */
 		[JwtAuthroize]
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] SaveData newData) {
@@ -45,7 +59,14 @@ namespace Esteettomyys_Backend.Controllers
 			return Accepted();
 		}
 
-		// DELETE api/saves
+		/**
+		 * DELETE api/saves
+		 * 
+		 * <summary>
+		 * Deletes the SaveData for the authenticated user.
+		 * The user needs to be authenticated to call this endpoint.
+		 * </summary>
+		 */
 		[JwtAuthroize]
 		[HttpDelete]
 		public async Task<IActionResult> Delete () {
@@ -56,7 +77,14 @@ namespace Esteettomyys_Backend.Controllers
 			return Accepted();
 		}
 
-		// GET api/saves/plain
+		/**
+		 * GET api/saves/plain
+		 * 
+		 * <summary>
+		 * Returns the SaveData as an uncompressed JSON. Use only for debugging.
+		 * The user needs to be authenticated to call this endpoint.
+		 * </summary>
+		 */
 		[JwtAuthroize]
 		[HttpGet("plain")]
 		public async Task<ActionResult> GetPlain () {

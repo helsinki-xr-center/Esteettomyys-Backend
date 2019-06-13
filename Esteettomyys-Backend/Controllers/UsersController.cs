@@ -20,7 +20,21 @@ namespace Esteettomyys_Backend.Controllers
 			passwordService = passwords;
 		}
 
-		// POST api/<controller>/create
+		/**
+		 * POST api/users/create
+		 * 
+		 * <summary>
+		 * Creates a new user with the provided credentials.
+		 * The credentials should be provided by JSON in the body.
+		 * like:
+		 * <code>
+		 * {
+		 *	"username" : "user"
+		 *	"password" : "pass"
+		 * }
+		 * </code>
+		 * </summary>
+		 */
 		[HttpPost("create")]
 		public async Task<IActionResult> Create (JObject credentials) {
 			if (!credentials.TryGetValue("username", StringComparison.InvariantCultureIgnoreCase, out JToken username) ||
@@ -46,7 +60,13 @@ namespace Esteettomyys_Backend.Controllers
 			return Accepted();
 		}
 
-		// DELETE api/<controller>/delete/{username}
+		/**
+		 * DELETE api/users/delete/{username}
+		 * 
+		 * <summary>
+		 * Deletes the provided user.
+		 * </summary>
+		 */
 		[HttpDelete("delete/{username}")]
 		public async Task<IActionResult> Delete (string username) {
 			string realUsername = username.ToLower();
