@@ -14,6 +14,9 @@ namespace Esteettomyys_Backend
 	{
 		public static void Main(string[] args)
 		{
+			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+			var isDevelopment = environment == EnvironmentName.Development;
+
 			var assembly = AppDomain.CurrentDomain.GetAssemblies()
 			.Single(o => o.EntryPoint != null);
 
@@ -22,7 +25,9 @@ namespace Esteettomyys_Backend
 			.SetBasePath(Directory.GetCurrentDirectory())
 			.AddJsonFile("hosting.json", optional: true);
 
-			config.AddUserSecrets(assembly, optional: false);
+			if (isDevelopment) { 
+				config.AddUserSecrets(assembly, optional: false);
+			}
 
 			var host = new WebHostBuilder()
 				.UseKestrel()

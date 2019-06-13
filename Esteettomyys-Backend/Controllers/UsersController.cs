@@ -38,7 +38,7 @@ namespace Esteettomyys_Backend.Controllers
 			};
 
 			if(await userService.UsernameExists(realUsername)) {
-				return Conflict();
+				return UnprocessableEntity("This username already exists.");
 			} else {
 				await userService.Create(user);
 			}
@@ -52,7 +52,7 @@ namespace Esteettomyys_Backend.Controllers
 			string realUsername = username.ToLower();
 
 			if(!await userService.UsernameExists(username)) {
-				return Conflict();
+				return NotFound();
 			}
 
 			//TODO: delete users

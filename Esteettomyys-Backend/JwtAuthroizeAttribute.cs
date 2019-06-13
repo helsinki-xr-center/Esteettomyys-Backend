@@ -10,14 +10,19 @@ using System.Threading.Tasks;
 namespace Esteettomyys_Backend
 {
 
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	/**
+	 * <summary>
+	 * Marks a Method as being only accessible with a valid api key. The user needs to send their api key in the header 'x-api-key' value.
+	 * </summary>
+	 */
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 	public class JwtAuthroizeAttribute : AuthorizeAttribute, IAuthorizationFilter
 	{
 		
 		public void OnAuthorization (AuthorizationFilterContext context) {
 			AuthorizationService authorization = context.HttpContext.RequestServices.GetService(typeof(AuthorizationService)) as AuthorizationService;
 
-			if (!context.HttpContext.Request.Headers.TryGetValue(AuthorizationService.apikey, out StringValues values)) {
+			if (!context.HttpContext.Request.Headers.TryGetValue(AuthorizationService.headerKey, out StringValues values)) {
 				context.Result = new UnauthorizedResult();
 				return;
 			}

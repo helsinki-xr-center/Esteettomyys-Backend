@@ -37,11 +37,21 @@ namespace Esteettomyys_Backend.Controllers
 		// POST api/saves
 		[JwtAuthroize]
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] SaveData newData)
-		{
+		public async Task<IActionResult> Post([FromBody] SaveData newData) {
 			string username = HttpContext.User.GetAuthenticatedUsername();
 
 			await userService.UpdateSaveData(username, newData);
+
+			return Accepted();
+		}
+
+		// DELETE api/saves
+		[JwtAuthroize]
+		[HttpDelete]
+		public async Task<IActionResult> Delete () {
+			string username = HttpContext.User.GetAuthenticatedUsername();
+
+			await userService.UpdateSaveData(username, null);
 
 			return Accepted();
 		}

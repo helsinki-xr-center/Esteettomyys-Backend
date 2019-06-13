@@ -11,7 +11,7 @@ namespace Esteettomyys_Backend
 {
 	public class AuthorizationService
 	{
-		public const string apikey = "x-api-key";
+		public const string headerKey = "x-api-key";
 		public const string claimName = ClaimTypes.Name;
 
 		private string secret;
@@ -20,6 +20,11 @@ namespace Esteettomyys_Backend
 			secret = config["jwt_secret"];
 		}
 
+		/**
+		 * <summary>
+		 * Generates a valid token that includes the user's username and expiration time.
+		 * </summary>
+		 */
 		public string GenerateToken (string username) {
 			byte[] key = Convert.FromBase64String(secret);
 			SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
@@ -36,6 +41,11 @@ namespace Esteettomyys_Backend
 			return handler.WriteToken(token);
 		}
 
+		/**
+		 * <summary>
+		 * Gets a <see cref="ClaimsPrincipal"/> from a token. If the token is not valid, returns null;
+		 * </summary>
+		 */
 		public ClaimsPrincipal GetPrincipal (string token) {
 			try {
 				JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -57,22 +67,5 @@ namespace Esteettomyys_Backend
 				return null;
 			}
 		}
-
-		public string GetUsernameFromTokenIfValid (string token) {
-			string username = null;
-			ClaimsPrincipal principal = GetPrincipal(token);
-			if (principal == null)
-				return null;
-			ClaimsIdentity identity = null;
-			try {
-				identity = (ClaimsIdentity)principal.Identity;
-			} catch (NullReferenceException) {
-				return null;
-			}
-			Claim idClaim = identity.FindFirst(claimName);
-			username = idClaim.Value;
-			return username;
-		}
-
 	}
 }

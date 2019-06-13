@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace Esteettomyys_Backend
 {
+	/**
+	* <summary>
+	* Database model for the User.
+	* </summary>
+	*/
 	public class User
 	{
 		[BsonId]

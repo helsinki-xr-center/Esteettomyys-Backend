@@ -26,7 +26,15 @@ namespace Esteettomyys_Backend.Controllers
 		}
 
 
-		// GET/POST api/login
+		/**
+		 * GET/POST api/login
+		 * 
+		 * <summary>
+		 * Takes in the user credentials from Json body with the keys 'username' and 'password'. 
+		 * Returns a valid api key as a <see cref="JsonResult"/> if the credentials were correct.
+		 * Otherwise returns <see cref="UnauthorizedResult"/>.
+		 * </summary>
+		 */
 		[HttpGet]
 		[HttpPost]
 		public async Task<IActionResult> Login(JObject credentials)
@@ -41,7 +49,7 @@ namespace Esteettomyys_Backend.Controllers
 			User user = await userService.GetByUsername(realUsername);
 
 			if(user == null) {
-				return NotFound();
+				return Unauthorized();
 			}
 
 			if (passwordService.CheckPassword(password.Value<string>(), user.encryptedPassword)) {
