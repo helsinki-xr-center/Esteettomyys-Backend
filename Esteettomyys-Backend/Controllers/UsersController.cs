@@ -29,8 +29,8 @@ namespace Esteettomyys_Backend.Controllers
 		 * like:
 		 * <code>
 		 * {
-		 *	"username" : "user"
-		 *	"password" : "pass"
+		 *		"username" : "user"
+		 *		"password" : "pass"
 		 * }
 		 * </code>
 		 * </summary>
@@ -71,7 +71,7 @@ namespace Esteettomyys_Backend.Controllers
 		public async Task<IActionResult> Delete (string username) {
 			string realUsername = username.ToLower();
 
-			if(!await userService.UsernameExists(username)) {
+			if(!await userService.UsernameExists(realUsername)) {
 				return NotFound();
 			}
 

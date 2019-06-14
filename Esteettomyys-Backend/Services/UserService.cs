@@ -25,10 +25,20 @@ namespace Esteettomyys_Backend
 			}
 		}
 
+		/**
+		* <summary>
+		* Inserts the User into the database.
+		* </summary>
+		*/
 		public async Task Create (User user) {
 			await users.InsertOneAsync(user);
 		}
 
+		/**
+		* <summary>
+		* Finds a user that matches the given username
+		* </summary>
+		*/
 		public async Task<User> GetByUsername (string username) {
 			await Task.CompletedTask;
 			return
@@ -40,22 +50,42 @@ namespace Esteettomyys_Backend
 			.FirstOrDefault();
 		}
 
+		/**
+		* <summary>
+		* Finds all users from the database.
+		* </summary>
+		*/
 		public IEnumerable<User> GetAll () {
 			return users.AsQueryable();
 		}
 
+		/**
+		* <summary>
+		* Updates the password for a player. newPassword should be already encrypted.
+		* </summary>
+		*/
 		public async Task UpdatePassword (string username, string newPassword) {
 			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
 			var update = Builders<User>.Update.Set(nameof(User.encryptedPassword), newPassword);
 			await users.UpdateOneAsync(filter, update);
 		}
 
+		/**
+		* <summary>
+		* Updates the SaveData for a user.
+		* </summary>
+		*/
 		public async Task UpdateSaveData (string username, SaveData newData) {
 			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
 			var update = Builders<User>.Update.Set(nameof(User.saveData), newData);
 			await users.UpdateOneAsync(filter, update);
 		}
 
+		/**
+		* <summary>
+		* Returns true if a user with this username exists.
+		* </summary>
+		*/
 		public async Task<bool> UsernameExists(string username) {
 			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
 			var result = await users.FindAsync(filter);

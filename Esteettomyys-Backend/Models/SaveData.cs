@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Esteettomyys_Backend
 {
+	/**
+	* <summary>
+	* Database model for save data.
+	* </summary>
+	*/
 	public class SaveData
 	{
 		public string saveName;
