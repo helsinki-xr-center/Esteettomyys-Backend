@@ -9,20 +9,19 @@ using System.Threading.Tasks;
 
 namespace Esteettomyys_Backend
 {
-	public class UserService : IUserService
+	public class LocalUserService : IUserService
 	{
-		private readonly IMongoCollection<User> users;
+		private List<User> users = new List<User>();
 
-		public UserService (IConfiguration config) {
-			var client = new MongoClient(config.GetValue<string>("mongodb_connection"));
-			var database = client.GetDatabase(config.GetValue<string>("mongodb_database"));
-			users = database.GetCollection<User>(config.GetValue<string>("mongodb_collection_users"));
+		public LocalUserService (IConfiguration config, IPasswordService passwordService) {
 
-			if (!users.Indexes.List().Any()) {
-				var userBuilder = Builders<User>.IndexKeys;
-				var indexModel = new CreateIndexModel<User>(userBuilder.Hashed(x => x.username));
-				Task.Run(() => users.Indexes.CreateOneAsync(indexModel));
-			}
+			User testUser1 = new User { username = "testimake1", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
+			User testUser2 = new User { username = "testimake2", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
+			User testUser3 = new User { username = "kissa", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
+
+			_ = Create(testUser1);
+			_ = Create(testUser2);
+			_ = Create(testUser3);
 		}
 
 		/**
@@ -31,7 +30,8 @@ namespace Esteettomyys_Backend
 		* </summary>
 		*/
 		public async Task Create (User user) {
-			await users.InsertOneAsync(user);
+			await Task.CompletedTask;
+			users.Add(user);
 		}
 
 		/**
@@ -43,7 +43,7 @@ namespace Esteettomyys_Backend
 			await Task.CompletedTask;
 			return
 			(
-			from user in users.AsQueryable()
+			from user in users
 			where user.username == username
 			select user
 			)
@@ -56,7 +56,7 @@ namespace Esteettomyys_Backend
 		* </summary>
 		*/
 		public IEnumerable<User> GetAll () {
-			return users.AsQueryable();
+			return users.AsEnumerable();
 		}
 
 		/**
@@ -65,9 +65,10 @@ namespace Esteettomyys_Backend
 		* </summary>
 		*/
 		public async Task UpdatePassword (string username, string newPassword) {
-			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
-			var update = Builders<User>.Update.Set(nameof(User.encryptedPassword), newPassword);
-			await users.UpdateOneAsync(filter, update);
+			User user = await GetByUsername(username);
+			if(user != null) {
+				user.encryptedPassword = newPassword;
+			}
 		}
 
 		/**
@@ -76,9 +77,10 @@ namespace Esteettomyys_Backend
 		* </summary>
 		*/
 		public async Task UpdateSaveData (string username, SaveData newData) {
-			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
-			var update = Builders<User>.Update.Set(nameof(User.saveData), newData);
-			await users.UpdateOneAsync(filter, update);
+			User user = await GetByUsername(username);
+			if (user != null) {
+				user.saveData = newData;
+			}
 		}
 
 		/**
@@ -87,9 +89,8 @@ namespace Esteettomyys_Backend
 		* </summary>
 		*/
 		public async Task<bool> UsernameExists (string username) {
-			var filter = Builders<User>.Filter.Eq(nameof(User.username), username);
-			var result = await users.FindAsync(filter);
-			return result.Any();
+			User user = await GetByUsername(username);
+			return user != null;
 		}
 	}
 }

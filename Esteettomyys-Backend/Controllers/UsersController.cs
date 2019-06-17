@@ -12,10 +12,10 @@ namespace Esteettomyys_Backend.Controllers
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
-		private UserService userService;
+		private IUserService userService;
 		private IPasswordService passwordService;
 
-		public UsersController(UserService service, IPasswordService passwords) {
+		public UsersController(IUserService service, IPasswordService passwords) {
 			userService = service;
 			passwordService = passwords;
 		}

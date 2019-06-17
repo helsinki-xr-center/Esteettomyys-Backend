@@ -26,9 +26,16 @@ namespace Esteettomyys_Backend
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-			services.AddSingleton<UserService>();
 			services.AddSingleton<IPasswordService>(new BCryptPasswordService());
 			services.AddSingleton<AuthorizationService>();
+
+			//if no mongodb settings and environment is development
+			if (string.IsNullOrEmpty(Configuration["mongodb_connection"])) {
+				services.AddSingleton<IUserService, LocalUserService>();
+			} else {
+				services.AddSingleton<IUserService, UserService>();
+			}
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

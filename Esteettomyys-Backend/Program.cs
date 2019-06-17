@@ -33,6 +33,12 @@ namespace Esteettomyys_Backend
 				.UseKestrel()
 				.UseConfiguration(config.Build())
 				.UseContentRoot(Directory.GetCurrentDirectory())
+				.ConfigureLogging((logging) =>
+				{
+					logging.AddConsole();
+					logging.AddDebug();
+					logging.AddEventSourceLogger();
+				})
 				.UseStartup<Startup>()
 				.Build();
 

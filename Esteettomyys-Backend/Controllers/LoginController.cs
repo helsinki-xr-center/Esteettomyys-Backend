@@ -15,11 +15,11 @@ namespace Esteettomyys_Backend.Controllers
 	public class LoginController : ControllerBase
 	{
 
-		private UserService userService;
+		private IUserService userService;
 		private IPasswordService passwordService;
 		private AuthorizationService authorization;
 
-		public LoginController (UserService service, IPasswordService passwords, AuthorizationService auth) {
+		public LoginController (IUserService service, IPasswordService passwords, AuthorizationService auth) {
 			userService = service;
 			passwordService = passwords;
 			authorization = auth;

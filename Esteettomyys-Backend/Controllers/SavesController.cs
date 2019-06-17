@@ -14,9 +14,9 @@ namespace Esteettomyys_Backend.Controllers
 	public class SavesController : ControllerBase
 	{
 
-		private UserService userService;
+		private IUserService userService;
 
-		public SavesController (UserService service) {
+		public SavesController (IUserService service) {
 			userService = service;
 		}
 

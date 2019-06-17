@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Esteettomyys_Backend
@@ -16,8 +18,14 @@ namespace Esteettomyys_Backend
 
 		private string secret;
 
-		public AuthorizationService(IConfiguration config) {
+		public AuthorizationService(IConfiguration config, ILogger<AuthorizationService> logger) {
 			secret = config["jwt_secret"];
+
+			if (string.IsNullOrEmpty(secret)) {
+				logger.LogWarning("No configuration found for 'jwt_secret'. Generating a random one for this instance.");
+				HMACSHA256 hmac = new HMACSHA256();
+				secret = Convert.ToBase64String(hmac.Key);
+			}
 		}
 
 		/**
