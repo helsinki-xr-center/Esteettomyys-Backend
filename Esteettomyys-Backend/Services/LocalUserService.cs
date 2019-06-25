@@ -15,9 +15,9 @@ namespace Esteettomyys_Backend
 
 		public LocalUserService (IConfiguration config, IPasswordService passwordService) {
 
-			User testUser1 = new User { username = "testimake1", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
-			User testUser2 = new User { username = "testimake2", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
-			User testUser3 = new User { username = "kissa", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now };
+			User testUser1 = new User { username = "testimake1", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now, role = UserRole.Student };
+			User testUser2 = new User { username = "testimake2", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now, role = UserRole.Student };
+			User testUser3 = new User { username = "kissa", encryptedPassword = passwordService.EncryptPassword("password"), timeCreated = DateTime.Now, role = UserRole.Teacher };
 
 			_ = Create(testUser1);
 			_ = Create(testUser2);

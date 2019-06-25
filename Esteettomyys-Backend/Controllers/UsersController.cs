@@ -48,7 +48,8 @@ namespace Esteettomyys_Backend.Controllers
 			User user = new User() {
 				username = realUsername,
 				encryptedPassword = encryptedPassword,
-				timeCreated = DateTime.Now
+				timeCreated = DateTime.Now,
+				role = UserRole.Student
 			};
 
 			if(await userService.UsernameExists(realUsername)) {

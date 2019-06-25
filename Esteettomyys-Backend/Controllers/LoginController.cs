@@ -53,7 +53,11 @@ namespace Esteettomyys_Backend.Controllers
 			}
 
 			if (passwordService.CheckPassword(password.Value<string>(), user.encryptedPassword)) {
-				var result = new JsonResult(authorization.GenerateToken(user.username));
+				JObject obj = new JObject();
+				obj.Add("token", authorization.GenerateToken(user.username, user.role));
+				obj.Add("role", user.role.ToString());
+
+				var result = new JsonResult(obj);
 				result.StatusCode = StatusCodes.Status200OK;
 				return result;
 			}

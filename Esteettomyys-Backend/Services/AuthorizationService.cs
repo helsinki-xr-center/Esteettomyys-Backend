@@ -14,7 +14,6 @@ namespace Esteettomyys_Backend
 	public class AuthorizationService
 	{
 		public const string headerKey = "x-api-key";
-		public const string claimName = ClaimTypes.Name;
 
 		private string secret;
 
@@ -33,12 +32,14 @@ namespace Esteettomyys_Backend
 		 * Generates a valid token that includes the user's username and expiration time.
 		 * </summary>
 		 */
-		public string GenerateToken (string username) {
+		public string GenerateToken (string username, UserRole role) {
 			byte[] key = Convert.FromBase64String(secret);
 			SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
 			SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor {
 				Subject = new ClaimsIdentity(new[] {
-					new Claim(claimName, username.ToString())}),
+					new Claim(ClaimTypes.Name, username.ToString()),
+					new Claim(ClaimTypes.Role, role.ToString())
+				}),
 				Expires = DateTime.UtcNow.AddHours(24),
 				SigningCredentials = new SigningCredentials(securityKey,
 					SecurityAlgorithms.HmacSha256Signature)

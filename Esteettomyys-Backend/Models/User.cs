@@ -21,7 +21,17 @@ namespace Esteettomyys_Backend
 		public string encryptedPassword { get; set; }
 		[BsonElement("CreationTime")]
 		public DateTime timeCreated;
+		[BsonElement("Role")]
+		public UserRole role;
 		[BsonElement("SaveData")]
 		public SaveData saveData { get; set; }
+	}
+
+	public enum UserRole
+	{
+		Guest,
+		Student,
+		Teacher,
+		Admin
 	}
 }
